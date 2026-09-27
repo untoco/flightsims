@@ -1,6 +1,5 @@
 X_SENSITIVITY = 0.5
 Y_SENSITIVITY = 1.5
-PEDAL_DEADZONE = 50
 
 
 def update():
@@ -22,9 +21,7 @@ combined = max(-1.0, min(1.0, combined))
 
 vJoy[0].z = int(combined * vJoy[0].axisMax)
 
-pedal_axis = pedals.x
-vJoy[0].setButton(0, pedal_axis < -PEDAL_DEADZONE)
-vJoy[0].setButton(1, pedal_axis > PEDAL_DEADZONE)
+vJoy[0].rz = int(pedals.x * vJoy[0].axisMax / 1000)
 
 if starting:
     pedals.setRange(-1000, 1000)
