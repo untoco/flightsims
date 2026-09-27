@@ -21,7 +21,7 @@ combined = max(-1.0, min(1.0, combined))
 
 vJoy[0].z = int(combined * vJoy[0].axisMax)
 
-vJoy[0].rz = int(pedals.x * vJoy[0].axisMax / 1000)
+vJoy[0].rz = int(pedals.z * vJoy[0].axisMax / 1000)
 
 if starting:
     pedals.setRange(-1000, 1000)
