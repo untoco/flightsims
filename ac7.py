@@ -1,5 +1,6 @@
 X_SENSITIVITY = 0.5
 Y_SENSITIVITY = 1.5
+STICK_BUTTON_THRESHOLD = -900
 
 
 def update():
@@ -14,13 +15,13 @@ throttle = joystick["VPC CDT-VMAX Throttle"]
 pedals = joystick["VPC R1-FALCON Pedals"]
 
 throttle_output = int(throttle.xRotation * vJoy[0].axisMax / 1000)
-deceleration_output = int(stick.zRotation * vJoy[0].axisMax / 1000)
+stick_button_pressed = stick.zRotation > STICK_BUTTON_THRESHOLD
 diagnostics.watch(throttle.xRotation)
 diagnostics.watch(stick.zRotation)
 diagnostics.watch(throttle_output)
-diagnostics.watch(deceleration_output)
+diagnostics.watch(stick_button_pressed)
 vJoy[0].z = throttle_output
-vJoy[0].rx = deceleration_output
+vJoy[0].setButton(0, stick_button_pressed)
 
 vJoy[0].rz = int(pedals.z * vJoy[0].axisMax / 1000)
 
