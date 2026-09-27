@@ -20,7 +20,10 @@ throttle_up = max(0.0, throttle_position - 0.5)
 throttle_down = stick_position * 0.5
 combined = max(0.0, min(1.0, 0.5 + throttle_up - throttle_down))
 
-vJoy[0].z = int((combined * 2.0 - 1.0) * vJoy[0].axisMax)
+throttle_output = int((combined * 2.0 - 1.0) * vJoy[0].axisMax)
+diagnostics.watch("throttle.x=%d stick.z=%d combined=%.3f vJoy.z=%d" %
+                  (throttle.x, stick.z, combined, throttle_output))
+vJoy[0].z = throttle_output
 
 vJoy[0].rz = int(pedals.z * vJoy[0].axisMax / 1000)
 
