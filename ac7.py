@@ -13,16 +13,19 @@ stick = joystick["R-VPC CDT-AEROMAX"]
 throttle = joystick["VPC CDT-VMAX Throttle"]
 pedals = joystick["VPC R1-FALCON Pedals"]
 
-throttle_up = (throttle.x + 1.0) / 2.0
-throttle_down = (stick.z + 1.0) / 2.0
+throttle_position = max(0.0, min(1.0, (throttle.x + 1000.0) / 2000.0))
+stick_position = max(0.0, min(1.0, (stick.z + 1000.0) / 2000.0))
 
-combined = throttle_up - throttle_down
-combined = max(-1.0, min(1.0, combined))
+throttle_up = max(0.0, throttle_position - 0.5)
+throttle_down = stick_position * 0.5
+combined = max(0.0, min(1.0, 0.5 + throttle_up - throttle_down))
 
-vJoy[0].z = int(combined * vJoy[0].axisMax)
+vJoy[0].z = int((combined * 2.0 - 1.0) * vJoy[0].axisMax)
 
 vJoy[0].rz = int(pedals.z * vJoy[0].axisMax / 1000)
 
 if starting:
+    stick.setRange(-1000, 1000)
+    throttle.setRange(-1000, 1000)
     pedals.setRange(-1000, 1000)
     trackIR.update += update
