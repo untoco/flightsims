@@ -13,19 +13,14 @@ stick = joystick["R-VPC CDT-AEROMAX"]
 throttle = joystick["VPC CDT-VMAX Throttle"]
 pedals = joystick["VPC R1-FALCON Pedals"]
 
-throttle_position = max(0.0, min(1.0, (throttle.xRotation + 1000.0) / 2000.0))
-stick_position = max(0.0, min(1.0, (stick.zRotation + 1000.0) / 2000.0))
-
-throttle_up = max(0.0, throttle_position - 0.5)
-throttle_down = stick_position * 0.5
-combined = max(0.0, min(1.0, 0.5 + throttle_up - throttle_down))
-
-throttle_output = int((combined * 2.0 - 1.0) * vJoy[0].axisMax)
+throttle_output = int(throttle.xRotation * vJoy[0].axisMax / 1000)
+deceleration_output = int(stick.zRotation * vJoy[0].axisMax / 1000)
 diagnostics.watch(throttle.xRotation)
 diagnostics.watch(stick.zRotation)
-diagnostics.watch(combined)
 diagnostics.watch(throttle_output)
+diagnostics.watch(deceleration_output)
 vJoy[0].z = throttle_output
+vJoy[0].rx = deceleration_output
 
 vJoy[0].rz = int(pedals.z * vJoy[0].axisMax / 1000)
 
